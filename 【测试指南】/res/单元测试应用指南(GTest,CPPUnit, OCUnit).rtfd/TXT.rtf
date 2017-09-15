@@ -1,0 +1,1998 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fnil\fcharset134 STSongti-SC-Regular;\f1\froman\fcharset0 Times-Roman;\f2\fmodern\fcharset0 Courier;
+\f3\froman\fcharset0 TimesNewRomanPSMT;\f4\fswiss\fcharset0 ArialMT;\f5\fnil\fcharset134 PingFangSC-Regular;
+}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue255;\red0\green0\blue0;\red67\green67\blue67;
+\red19\green116\blue196;\red165\green165\blue165;\red16\green60\blue192;\red107\green0\blue1;\red0\green0\blue255;
+\red80\green42\blue24;\red181\green0\blue19;\red151\green0\blue126;\red73\green17\blue135;\red50\green91\blue97;
+\red20\green0\blue196;\red29\green55\blue58;\red34\green0\blue91;\red251\green0\blue7;\red13\green100\blue1;
+\red212\green29\blue40;\red45\green133\blue164;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c0\c0;\cssrgb\c33333\c33333\c33333;
+\cssrgb\c4706\c53725\c81176;\cssrgb\c70588\c70588\c70588;\cssrgb\c6667\c33333\c80000;\cssrgb\c50196\c0\c0;\cssrgb\c0\c0\c100000;
+\cssrgb\c39216\c21961\c12549;\cssrgb\c76863\c10196\c8627;\cssrgb\c66667\c5098\c56863;\cssrgb\c36078\c14902\c60000;\cssrgb\c24706\c43137\c45490;
+\cssrgb\c10980\c0\c81176;\cssrgb\c14902\c27843\c29412;\cssrgb\c18039\c5098\c43137;\cssrgb\c100000\c0\c0;\cssrgb\c0\c45490\c0;
+\cssrgb\c87451\c20392\c20392;\cssrgb\c21176\c59216\c70196;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\b\fs36 \cf0 \cb2 \expnd0\expndtw0\kerning0
+\'b5\'a5\'d4\'aa\'b2\'e2\'ca\'d4\'d3\'a6\'d3\'c3\'d6\'b8\'c4\'cf
+\f1 (GTest,CPPUnit, OCUnit)\
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs38 \cf4 \cb2 Index
+\b0 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs30 \cf4 \cb2 1. Introduction\cb1 \
+\cb2 2. Purpose\cb1 \
+\cb2 3. Basic concepts of Unit Test\cb1 \
+\cb2 3.1 Suite\cb1 \
+\cb2 3.2 Test Case\cb1 \
+\cb2 4. Target programming languages\cb1 \
+\cb2 5. Target Unit Test Framework\cb1 \
+\cb2 6. Google Test\cb1 \
+\cb2 6.1 Google Test for Windows\cb1 \
+\cb2 6.1.1 Install the Google Test\cb1 \
+\cb2 6.1.2 Apply Google Test in your project\cb1 \
+\cb2 6.2 Google Test for Mac OS\cb1 \
+\cb2 6.2.1 Install the Google Test\cb1 \
+\cb2 6.2.2 Apply Google Test in your project\cb1 \
+\cb2 6.3 Supported Test Macros\cb1 \
+\cb2 7. CPPUnit\cb1 \
+\cb2 7.1 CPPUnit for Windows DDK\cb1 \
+\cb2 7.1.1 Install the CPPUnit\cb1 \
+\cb2 7.1.2 Create new project in WDK.\cb1 \
+\cb2 7.2 Supported Test Macros\cb1 \
+\cb2 8. OCUnit\cb1 \
+\cb2 8.1 Overview\cb1 \
+\cb2 8.2 Sample to add unit test\cb1 \
+\cb2 8.3 Supported Test Macros\cb1 \
+\cb2 9. Guideline to apply unit test\cb1 \
+\cb2 9.1 While one bug is found (Core module)\cb1 \
+\cb2 9.2 While new design is requested\cb1 \
+\cb2 10. Reference\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0\'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs60 \cf5 \cb2 1. Introduction\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 Different platform has different Unit Test framework, which depends on the development mythology.In xUnit framework, JUnit is best popular one, it supports many powerful features to allow programmer could write test case easily. For other unit testing framework, they all try to keep same architecture with JUnit, so all of them have many core value and common concepts.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs60 \cf5 \cb2 2. Purpose\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 Application of Unit Test could improve the development quality entirely. The document is used to introduce how to apply unit test in the project, and help to write testing case easily in your project.\cb1 \
+\cb2 To apply Unit Test as regression testing is useful for current situation. While there are some bugs was found in core module, so the unit test is suggested to create regression testing. For UI operation, that could be identified as block box issue and test with Automatic Testing Mechanical.\cb1 \
+\cb2 Unit Test will be integrated with main project and build together. The unit test will be modified while new core issue is found. For some testing case will generate output files, that need confirmation manually. Anyway, that won\'92t affect the unit test application.\cb1 \
+\cb2 In this document, three unit test framework are introduced. Google Test and OCUnit is preferred for generally testing purpose. For Mac OS, even though XCode provide CPlusUnit as default C++ Unit Test framework, Google Test still is preferred for C++ Unit Test, that\'92s because Google Test has qualified maintenance from Google, and more useful links and documentation on Internet. The most important point, Google Test has better platform independent capability.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs60 \cf5 \cb2 3. Basic concepts of Unit Test\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs45 \cf4 \cb2 \'a0\cf5 3.1 Suite\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0 One suite involves one or more test cases. Generally, it has below running cycle:\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723418_8513.png \width2520 \height3720 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0 \'93Set up\'94 is called before running of each test case to initialize or reset the testing target.\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0 \'93Tear down\'94 is called after running of each test case to clear testing target, such as allocated memory or instances.\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs45 \cf4 \cb2 \'a0\cf5 3.2 Test Case\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0 One test case is implemented as a single function in suite, it will perform one or more testing in a series. Each unit testing frame supplies many assertions to check the performing result.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Below is a table which list several test macros in Google Test, OCUnit and CPPUnit:\cb1 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trmarl712 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat6 \clwWidth3285\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clcbpat6 \clwWidth3646\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clcbpat6 \clwWidth5199\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 Google Test
+\b0 \cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 OCUnit
+\b0 \cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 CPPUnit
+\b0 \cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trmarl712 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3285\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth3646\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_EQ\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertEquals\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 CPPUNIT_ASSERT_EQUAL\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trmarl712 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3285\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth3646\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_TRUE\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertTrue\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 CPPUNIT_ASSERT\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trmarl712 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3285\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth3646\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_FALSE\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertFalse\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 CPPUNIT_ASSERT_ASSERTION_FAIL\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trmarl712 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3285\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth3646\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_THROW\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertThrows\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 CPPUNIT_ASSERT_THROW\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trmarl712 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3285\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth3646\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_FLOAT_EQ\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertEqualsWithAccuracy\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 CPPUNIT_ASSERT_DOUBLES_EQUAL\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs60 \cf5 \cb2 4. Target programming languages\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0 C/C++\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0 Objective \'96 C\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs60 \cf5 \cb2 5. Target Unit Test Framework\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0 Google Test for C/C++ ({\field{\*\fldinst{HYPERLINK "http://code.google.com/p/googletest/"}}{\fldrslt \cf7 Website}})\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0 OCUnit for Objective-C (Cocoa Framework)\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0 CPPUnit for C/C++ ({\field{\*\fldinst{HYPERLINK "http://sourceforge.net/projects/cppunit/"}}{\fldrslt \cf7 Website}})\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs60 \cf5 \cb2 6. Google Test\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 Google testing framework is a C/C++ unit testing framework which be hold by Google. That is base on xUnit architecture, and supports automatic test discovery.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Google Test should be downloaded from its website and compiled by developer own. There are two libraries and several header files are generated for further application.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs32 \cf4 \cb2   
+\i\b gtest library
+\i0\b0  (gtest.lib in Windows, and libgtest.a in Mac OS)
+\f2\fs30 \
+
+\f1\fs32     This is the main library of Google Test framework. All testing project should link with this library.
+\f2\fs30 \
+
+\f1\fs32   
+\i\b gtest_main library
+\b0  (gtest_main.lib in Windows, and libgtest_main.a in Mac OS)
+\f2\i0\fs30 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf4 \'a0\'a0\'a0 This library provides the main function, so developer won\'92t implement it again. The main function is very simple also; you could find codes it in gtest_main.c.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 There is only one header file needs to include in source code, below line should be added in testing unit:\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs26\fsmilli13333 \cf4 \cb2 \'a0#include <gtest/gtest.h>
+\f1\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 *Remember to specify the search path for your header files.\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs45 \cf5 \cb2 6.1 Google Test for Windows\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs35 \cf5 \cb2 6.1.1 Install the Google Test\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs29\fsmilli14667 \cf4 \cb2 Step 1. Download the source code and extract all files.
+\fs30 \cb1 \
+
+\fs29\fsmilli14667 \cb2 Step 2. Open the Visual Studio solution in
+\i msvc
+\i0  subfolder in downloaded gtest. Finish the converting wizard if open with newer Visual Studio.
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs29\fsmilli14667 \cf4 {{\NeXTGraphic 1340723436_5964.png \width3660 \height3080 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+
+\fs30 \cf4 \
+\pard\pardeftab720\partightenfactor0
+
+\fs29\fsmilli14667 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs29\fsmilli14667 \cb2 Step 3. Compile
+\i gtest
+\i0  and 
+\i gtest_main
+\i0  project.\'a0 Below files are generated in gtest/msvc/gtest/Release folder:
+\fs30 \cb1 \
+
+\i\fs29\fsmilli14667 \cb2 gtest.lib,
+\i0\fs30 \cb1 \
+
+\i\fs29\fsmilli14667 \cb2 gtest_main.lib
+\i0\fs30 \cb1 \
+
+\fs29\fsmilli14667 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs29\fsmilli14667 \cb2 And, header files are placed in gtest/include folder. For easily use, you could put them together as below structure:
+\fs30 \cb1 \
+
+\i\fs29\fsmilli14667 \cb2 gtest/
+\i0\fs30 \cb1 \
+
+\i\fs29\fsmilli14667 \cb2 \'a0\'a0\'a0 /include
+\i0\fs30 \cb1 \
+
+\i\fs29\fsmilli14667 \cb2 \'a0\'a0\'a0 /lib
+\i0\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 \'a0
+\b0 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs35 \cf5 \cb2 6.1.2 Apply Google Test in your project\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 One Fibonacci number program will be created to introduce application of Google Test. For implementation of Fibonacci number will be ignored, we just create one command line tool and name source file and class as Fibonacci. Below steps is shown how to add Google Test base on this project.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Step 1. Add one new Win32 Console project in the solution, and name as \'93UnitTest\'94. Remove the main function in UnitTest.cpp.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Step 2. Add Fibonacci.cpp in new project, and create new Class name as CUnitTester as below:\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723450_3056.png \width6880 \height2940 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 Step 3. Set the project properties as below:\cb1 \
+\cb2 \'a0\'a0 Additional including path: C:\\project\\gtest\\include\cb1 \
+\cb2 \'a0\'a0 Additional library path: C:\\project\\gtest\\lib\cb1 \
+\cb2 \'a0\'a0 Additional dependencies: gtest.lib gtest_main.lib\cb1 \
+\cb2 \'a0\'a0 Runtime Library: /MT\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0 *Special note: Runtime Library should be kept same as gtest.\cb1 \
+\cb2 \'a0 The testing project should link to specified release version or debug version Google Test libraries.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Step 4. Edit the UnitTester.h as below:\cb1 \
+\cb2 #include \cf8 "Fibonacci.h"\cf4 \cb1 \
+\cb2 #include \cf8 <gtest/gtest.h>\cf4 \cb1 \
+\cb2 \'a0\cb1 \
+\cb2 class CUnitTester:\cf9 public\cf4 testing::Test\cb1 \
+\cb2 \{\cb1 \
+\cb2 protected:\cb1 \
+\cb2 \'a0\'a0 CFibonacci * fib;\cb1 \
+\cb2 protected:\cb1 \
+\cb2 \'a0\'a0 \cf9 virtual\cf4  \cf9 void\cf4  SetUp()\cb1 \
+\cb2 \'a0\'a0 \{\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 fib= \cf9 new\cf4  CFibonacci();\cb1 \
+\cb2 \'a0\'a0 \}\cb1 \
+\cb2 \'a0\'a0 \cf9 virtual\cf4  \cf9 void\cf4  TearDown()\cb1 \
+\cb2 \'a0\'a0 \{\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \cf9 delete\cf4  fib;\cb1 \
+\cb2 \'a0\'a0 \}\cb1 \
+\cb2 \};\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Step 5. Edit the UnitTester.cpp as below:\cb1 \
+\cb2 #include \cf8 "StdAfx.h"\cf4 \cb1 \
+\cb2 #include \cf8 "UnitTester.h"\cf4 \cb1 \
+\cb2 \'a0\cb1 \
+\cb2 TEST_F(CUnitTester,Negative)\cb1 \
+\cb2 \{\cb1 \
+\cb2 \'a0\'a0 EXPECT_EQ( 1, fib->GetFibonacci(-1) );\cb1 \
+\cb2 \}\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 TEST_F(CUnitTester,TestForThree)\cb1 \
+\cb2 \{\cb1 \
+\cb2 \'a0\'a0 EXPECT_EQ( 3, fib->GetFibonacci(3) );\'a0\'a0\'a0\'a0\cb1 \
+\cb2 \}\cb1 \
+\cb2 *The source code is described to use SetUp and TearDown, for easy purpose, below source codes is work fine also:\cb1 \
+\cb2 \'a0 1. Empty the UnitTester.h\cb1 \
+\cb2 \'a0 2. Edit UnitTester.cpp as below:\cb1 \
+\cb2 #include \cf8 "Fibonacci.h"\cf4 \cb1 \
+\cb2 #include \cf8 <gtest/gtest.h>\cf4 \cb1 \
+\cb2 \'a0\cb1 \
+\cb2 TEST(FibonacciTest,Negative)\cb1 \
+\cb2 \{\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0 CFibonacci * fib = \cf9 new\cf4  CFibonacci();\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0 EXPECT_EQ( 1, fib->GetFibonacci(-1) );\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0 \cf9 delete\cf4  fib;\cb1 \
+\cb2 \}\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 TEST(FibonacciTest,TestForThree)\cb1 \
+\cb2 \{\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0 CFibonacci * fib = \cf9 new\cf4  CFibonacci();\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0 EXPECT_EQ( 3, fib->GetFibonacci(3) );\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0 \cf9 delete\cf4  fib;\cb1 \
+\cb2 \}\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Step 6. Build the testing project, and check the result:\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\b \cf4 {{\NeXTGraphic 1340723472_4442.png \width6660 \height3120 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0
+\b0 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs45 \cf4 \cb2 \'a0
+\b \cf5 6.2 Google Test for Mac OS\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs35 \cf4 \cb2 \'a0\'a0 \cf5 6.2.1 Install the Google Test\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 \'a0\'a0 Step 1. Download the Google Test from its download website:\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0{\field{\*\fldinst{HYPERLINK "http://code.google.com/p/googletest/downloads/list"}}{\fldrslt 
+\i \cf7 http://code.google.com/p/googletest/downloads/list}}\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0\'a0 Step 2. Open XCode project file in its xcode subfolder:\cb1 \
+\cb2 \'a0\'a0\'a0\'a0 \cb1 {{\NeXTGraphic 1340723486_9427.png \width7560 \height3620 \noorient
+}¬}\
+\cb2 \'a0\'a0\cb1 \
+\cb2 \'a0\'a0\'a0 Step 3. Set below three targets as Universal binary with Mac OS 10.4u SDK for release configuration.\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cb1 {{\NeXTGraphic 1340723498_1645.png \width2540 \height2560 \noorient
+}¬}\
+\cb2 *That will be easy to use for most of our projects. Below is a sample setting:\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723514_7801.png \width9660 \height2540 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Step 4. Build out one framework and two static libraries.\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cb1 {{\NeXTGraphic 1340723531_5304.png \width5760 \height1140 \noorient
+}¬}\
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 Copy gtest.framework to /Library/Frameworks, copy two static libraries to one specified folder, or /usr/local/lib in each SDK (All of them are placed in /Developer/SDKs).\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0\'a0 Now, Google Test is ready to use.\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs35 \cf4 \cb2 \'a0 \cf5 6.2.2 Apply Google Test in your project\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 \'a0\'a0 One Fibonacci number program will be created to introduce application of Google Test. For implementation of Fibonacci number will be ignorred, we just create one command line tool and name source file and class as Fibonacci. Below steps is shown how to add Google Test base on this project.\cb1 \
+\cb2 \'a0\'a0 Step 1.\'a0\'a0 Add new \'93BSD - Shell Tool\'94 target in the project , and name as Testing:\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723547_3018.png \width8280 \height4160 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0\'a0 Step 2. Create new group \'93UnitTest\'94 in source tree, and add new C++ file and name as Testing.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723565_1707.png \width7560 \height3480 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 \'a0\'a0\'a0\'a0\'a0 Assign these new file to be included in \'93Testing\'94 target only as below:\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723581_9030.png \width7560 \height3440 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 \'a0 \'a0\'a0\cb1 \
+\cb2 \'a0\'a0\'a0 Step 3.\'a0 Drag below files into the project, and assign for Testing Target only.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723594_7143.png \width2520 \height2440 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0 Drag Fibonacci.cpp to Testing target also. Finally, the Testing target should include below files:\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cb1 {{\NeXTGraphic 1340723606_4367.png \width2640 \height2460 \noorient
+}¬}\
+\cb2 \'a0\'a0\'a0 Step 4. Edit the Testing.h as below:\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf10 \cb2 #include\cf11 "Fibonacci.h"
+\fs30 \cf4 \cb1 \
+
+\fs24 \cf10 \cb2 #include\cf11 <gtest/gtest.h>
+\fs30 \cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf12 \cb2 class\cf4 FibTest :\cf12 public
+\fs30 \cf4  
+\fs24 testing::\cf13 Test\cf4 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \{
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf12 \cb2 protected\cf4 :
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\cf14 Fibonacci
+\fs30 \cf4  
+\fs24 *
+\fs30  
+\fs24 \cf14 fib\cf4 ;
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf12 \cb2 protected\cf4 :
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\cf12 virtual\cf4 \'a0\cf12 void\cf4 SetUp()
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf14 fib\cf4 =\cf12 new\cf4 \'a0\cf14 Fibonacci\cf4 ();
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\cf12 virtual\cf4 \'a0\cf12 void\cf4 TearDown()
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf12 delete\cf4 \'a0\cf14 fib\cf4 ;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \};
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\'a0\'a0 Step 5. Edit Testing.cpp as below:\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf10 \cb2 #include\cf11 "Testing.h"
+\fs30 \cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 TEST_F(\cf14 FibTest\cf4 ,Negative)
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\cf10 EXPECT_EQ\cf4 (\cf15 1\cf4 , fib->\cf16 GetFibonacci\cf4 (-\cf15 1\cf4 ) );
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 TEST_F(\cf14 FibTest\cf4 ,TestForThree)
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\cf10 EXPECT_EQ\cf4 (\cf15 3\cf4 , fib->\cf16 GetFibonacci\cf4 (\cf15 3\cf4 ) );\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf12 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 int\cf4 main(\cf12 int\cf4 argc,
+\fs30  
+\fs24 \cf12 char
+\fs30 \cf4  
+\fs24 **argv)
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0::testing::\cf17 InitGoogleTest\cf4 (&argc, argv);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\cf12 return\cf4 \'a0\cf10 RUN_ALL_TESTS\cf4 ();
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs29\fsmilli14667 \cf4 \cb2 If we won\'92t like to use these SetUp and TearDown functions, we could use below source codes:
+\fs30 \cb1 \
+
+\fs29\fsmilli14667 \cb2 a.
+\f3\fs18\fsmilli9333 \'a0\'a0\'a0\'a0
+\f1\fs29\fsmilli14667 Clear Testing.h.
+\fs30 \cb1 \
+
+\fs29\fsmilli14667 \cb2 b.
+\f3\fs18\fsmilli9333 \'a0\'a0\'a0\'a0
+\f1\fs29\fsmilli14667 \'a0Edit Testng.cpp as below:
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf10 \cb2 #include\cf11 "Fibonacci.h"
+\fs30 \cf4 \cb1 \
+
+\fs24 \cf10 \cb2 #include\cf11 <gtest/gtest.h>
+\fs30 \cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 TEST(FibonacciTest,Negative)
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\cf14 Fibonacci
+\fs30 \cf4  
+\fs24 * fib =
+\fs30  
+\fs24 \cf12 new\cf4 \'a0\cf14 Fibonacci\cf4 ();
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\cf10 EXPECT_EQ\cf4 (\cf15 1\cf4 , fib->\cf16 GetFibonacci\cf4 (-\cf15 1\cf4 ) );
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\cf12 delete
+\fs30 \cf4  
+\fs24 fib;
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 TEST(FibonacciTest,TestForThree)
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\cf14 Fibonacci
+\fs30 \cf4  
+\fs24 * fib =
+\fs30  
+\fs24 \cf12 new\cf4 \'a0\cf14 Fibonacci\cf4 ();
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\cf10 EXPECT_EQ\cf4 (\cf15 3\cf4 , fib->\cf16 GetFibonacci\cf4 (\cf15 3\cf4 ) );
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\cf12 delete
+\fs30 \cf4  
+\fs24 fib;
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf12 \cb2 int\cf4 main(\cf12 int\cf4 argc,
+\fs30  
+\fs24 \cf12 char
+\fs30 \cf4  
+\fs24 **argv)
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0 ::\cf14 testing\cf4 ::\cf17 InitGoogleTest\cf4 (&argc, argv);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\cf12 return\cf4 \'a0\cf10 RUN_ALL_TESTS\cf4 ();
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 *If we won\'92t add main function by our own, perhaps below error will be happened:
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\i\fs24 \cf18 \cb2 This test program did NOT call ::testing::InitGoogleTest before calling RUN_ALL_TESTS().\'a0 Please fix it.
+\i0\fs30 \cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\cb1 \
+\cb2 \'a0\'a0 \'a0Step 6. Run it and check the result.\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0
+\fs24 [==========] Running 2 tests from 1 test case.
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 [----------] Global test environment set-up.
+\fs30 \cb1 \
+
+\fs24 \cb2 [----------] 2 tests from FibonacciTest
+\fs30 \cb1 \
+
+\fs24 \cb2 [ RUN\'a0\'a0\'a0\'a0\'a0 ] FibonacciTest.Negative
+\fs30 \cb1 \
+
+\fs24 \cb2 [\'a0\'a0\'a0\'a0\'a0\'a0 OK ] FibonacciTest.Negative (0 ms)
+\fs30 \cb1 \
+
+\fs24 \cb2 [ RUN\'a0\'a0\'a0\'a0\'a0] FibonacciTest.TestForThree
+\fs30 \cb1 \
+
+\fs24 \cb2 [\'a0\'a0\'a0\'a0\'a0\'a0 OK ] FibonacciTest.TestForThree (0 ms)
+\fs30 \cb1 \
+
+\fs24 \cb2 [----------] 2 tests from FibonacciTest (0 ms total)
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 [----------] Global test environment tear-down
+\fs30 \cb1 \
+
+\fs24 \cb2 [==========] 2 tests from 1 test case ran. (0 ms total)
+\fs30 \cb1 \
+
+\fs24 \cb2 [\'a0 PASSED\'a0 ] 2 tests.
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs45 \cf5 \cb2 6.3 Supported Test Macros\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 Google Test allows use EXPECT_XX or ASSERT_XX for test macros.\cb1 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat6 \clwWidth2199\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clcbpat6 \clwWidth5180\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clcbpat6 \clwWidth5284\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 Category
+\b0 \cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 Macro
+\b0 \cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 Description
+\b0 \cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmgf \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Equality Tests\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_EQ(expected,actual)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that expected == actual\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_NE(v1, v2)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that v1 != v2\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_LT(v1, v2)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that v1 < v2\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_LE(v1, v2)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that v1 <= v2\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_GT(v1, v2)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that v1 > v2\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_GE(v1, v2)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that v1 >= v2\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmgf \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 C String\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_STREQ(s1, s2)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that s1 == s2\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_STRNE(s1, s2)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that s1 != s2\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_STRCASEEQ(s1, s2)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that s1 == s2, ignoring case\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_STRCASENE(s1, s2)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that s1 != s2, ignoring case\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmgf \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Float & Double\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_FLOAT_EQ(expected,actual)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that two float values are almost equal.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_NEAR(v1,v2,abs_error)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that v1 and v2 are within the given distance to each other.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_DOUBLE_EQ(expected,actual)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that two double values are almost equal.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmgf \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Exception Tests\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_THROW(statement,
+\fs29\fsmilli14667 \cf19 \'a0
+\fs30 \cf4 expected_exception)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that the statement throws the expected exception.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_NO_THROW(statement)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that the statement doesn't throw any exception.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_ANY_THROW(statement)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that the statement throws an exception.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmgf \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Boolean\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_TRUE(condition)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that the condition is true.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2199\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth5180\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5284\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 EXPECT_FALSE(condition)\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Tests that the condition is false.\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 For more details, please refer to gtest/gtest.h.\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs60 \cf5 \cb2 7. CPPUnit\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs34\fsmilli17333 \cf4 \cb2 CPPUnit is a powerful unit testing framework for C/C++, and it could provide DLL testing mechnisam to support widely testing purpose. It also could support DDK environment, but the environment setup is more complex than other application.
+\fs30 \cb1 \
+
+\fs34\fsmilli17333 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs34\fsmilli17333 \cb2 Here, only CPPUnit for Windows DDK will be introduced.
+\fs30 \cb1 \
+
+\fs34\fsmilli17333 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs45 \cf4 \cb2 \'a0\cf5 7.1 CPPUnit for Windows DDK\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs35 \cf5 \cb2 7.1.1 Install the CPPUnit
+\b \cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 CPPUnit should be built with the specified WDK at first.\cb1 \
+\cb2 1. Setup the environment of Visual Studio for WDK\cb1 \
+\cb2 \'a0\'a0 A. Visual Studio -> Tools -> Options -> Projects and Solutions -> VC++ Directories. Show directories for:\cb1 \
+\cb2 \'a0\'a0\'a0\'a0 Include files\cb1 \
+\cb2 \'a0\'a0. Add below list:\cb1 \
+\cb2 \'a0\'a0\'a0\'a0 C:\\WinDDK\\6801.0\\inc\\api\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 C:\\WinDDK\\6801.0\\inc\\crt\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 C:\\WinDDK\\6801.0\\inc\\ddk\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 C:\\WinDDK\\6801.0\\inc\\api\\crt\\stl60\cb1 \
+\cb2 \'a0\'a0 B. Same setting UI.\cb1 \
+\cb2 \'a0\'a0\'a0\'a0 . Show directories for:\cb1 \
+\cb2 \'a0\'a0Library files\cb1 \
+\cb2 \'a0\'a0. Add below list:\cb1 \
+\cb2 \'a0\'a0\'a0\'a0 C:\\WinDDK\\6801.0\\Lib\\Crt\\i386\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 C:\\WinDDK\\6801.0\\Lib\\wnet\\i386\'a0
+\i <- For Windows 2003 only
+\i0 \cb1 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0 NOTE: Base on these settings, Visual Studio could build the WDK project also.\cb1 \
+\cb2 \'a0\'a0\cb1 \
+\cb2 2. Open cppunit project and change below settings:\cb1 \
+\cb2 \'a0\'a0 Project Properties -> C/C++ -> Advanced ->Calling Convention should be "__stdcall(/Gz)"\cb1 \
+\cb2 \'a0\'a0\'a0\'a0 *Remember target application should have same "Calling Convention" setting.\cb1 \
+\cb2 \'a0\'a0*WDK compiler set the "Calling Convention" to stdcall. (And I don't know how to change it)\cb1 \
+\cb2 \'a0\'a0
+\i Project Properties -> C/C++ -> Code Generation -> Runtime Library
+\i0  should be "Multi-threaded (/MT)"\cb1 \
+\cb2 \'a0\'a0\'a0\'a0 *Note that different linking mode has different settings.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 3. Build "cppunit" solutions in Release mode. (Debug mode is unnecessary.)\cb1 \
+\cb2 \'a0\'a0 *Remember to copy one to specified folder for WDK using only.\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs35 \cf4 \cb2 \'a0\cf5 7.1.2 Create new project in WDK.
+\b \cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 1. Add below items in source files\cb1 \
+\cb2 \'a0
+\b CPPUNITDIR
+\b0 =E:\\project\\cppunit\'a0 
+\i <- Constant definition
+\i0 \cb1 \
+\cb2 \'a0
+\b TARGETNAME
+\b0 =UnitRunner 
+\i <- Target application name
+\i0 \cb1 \
+\cb2 \'a0
+\b TARGETPATH
+\b0 =obj\cb1 \
+\cb2 \'a0
+\b TARGETTYPE
+\b0 =PROGRAM\cb1 \
+\cb2 \'a0
+\b UMTYPE
+\b0 =console\cb1 \
+\cb2 \'a0
+\b UMENTRY
+\b0 =main\cb1 \
+\cb2 \'a0
+\b USE_LIBCMT
+\b0  = 1\'a0 
+\i <- To use standard runtime library for /MT. DO NOT USE MSVCRT, that is for /MD
+\i0 \cb1 \
+\cb2 \'a0
+\b USE_IOSTREAM
+\b0  =1\cb1 \
+\cb2 \'a0
+\b USE_STL
+\b0 =1\'a0 
+\i <- The cppunit is depended on STL library
+\i0 \cb1 \
+\cb2 \'a0
+\b STL_VER
+\b0 =60 
+\i <- This version should keep same as cppunit. cppunit(VS2005) should set this item to 60.
+\i0 \cb1 \
+\cb2 \'a0
+\b USE_NATIVE_EH
+\b0 =1\cb1 \
+\cb2 \'a0
+\b MSC_OPTIMIZATION
+\b0 =/Od /Oi\cb1 \
+\cb2 \'a0
+\b _NT_TARGET_VERSION
+\b0  = 0x0501 
+\i <-Define the target operation system. This is same as testing platform.
+\i0 \cb1 \
+\cb2 \'a0
+\b C_DEFINES
+\b0 =$(C_DEFINES) /D_STL60_\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 2. Add include path of CPPUnit\cb1 \
+\cb2 \'a0
+\b INCLUDES
+\b0 =$(DDK_INC_PATH);$(INCLUDES);$(CPPUNITDIR)\\include;\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 3. Add cppunit library in LIB list:\cb1 \
+\cb2 \'a0
+\b TARGETLIBS
+\b0 =$(TARGETLIBS) \\\cb1 \
+\cb2 \'a0 ......\cb1 \
+\cb2 \'a0 $(CPPUNITDIR)\\lib\\WDK\\cppunit.lib\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0 *Sometime, you may need other libraries, add them here.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 4. Add source files in sources and start building.\cb1 \
+\cb2 Below are sample codes:\cb1 \
+\cb2 \'a0\'a0 main.cpp\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 #include <cppunit/BriefTestProgressListener.h>
+\fs30 \cb1 \
+
+\fs24 \cb2 #include <cppunit/CompilerOutputter.h>
+\fs30 \cb1 \
+
+\fs24 \cb2 #include <cppunit/extensions/TestFactoryRegistry.h>
+\fs30 \cb1 \
+
+\fs24 \cb2 #include <cppunit/TestResult.h>
+\fs30 \cb1 \
+
+\fs24 \cb2 #include <cppunit/TestResultCollector.h>
+\fs30 \cb1 \
+
+\fs24 \cb2 #include <cppunit/TestRunner.h>
+\fs30 \cb1 \
+
+\fs24 \cb2 extern "C"
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 int __cdecl main( int argc, char* argv[] )
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 // Create the event manager and test controller
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 CPPUNIT_NS::TestResult controller;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 // Add a listener that colllects test result
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 CPPUNIT_NS::TestResultCollector result;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 controller.addListener( &result );\'a0\'a0\'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 // Add a listener that print dots as test run.
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 CPPUNIT_NS::BriefTestProgressListener progress;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 controller.addListener( &progress );\'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 // Add the top suite to the test runner
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 CPPUNIT_NS::TestRunner runner;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 runner.addTest( CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest() );
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 runner.run( controller );
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 // Print test in a compiler compatible format.
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 CPPUNIT_NS::CompilerOutputter outputter( &result, CPPUNIT_NS::stdCOut() );
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 outputter.write();
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 return result.wasSuccessful() ? 0 : 1;
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0TestCase.h\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 #include <cppunit/extensions/HelperMacros.h>
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 class ScanAPITestSuite : public CPPUNIT_NS::TestFixture
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 CPPUNIT_TEST_SUITE( ScanAPITestSuite );
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 CPPUNIT_TEST( InitializeTesting );
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 CPPUNIT_TEST_SUITE_END();
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 protected:
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPMXScanAPI * m_pScanAPI;
+\fs30 \cb1 \
+
+\fs24 \cb2 public:
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 ScanAPITestSuite();
+\fs30 \cb1 \
+
+\fs24 \cb2 public:
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 void setUp();
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 void tearDown();
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 protected:
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 void InitializeTesting();
+\fs30 \cb1 \
+
+\fs24 \cb2 \};
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0 TestCase.cpp\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 #include <cppunit/config/SourcePrefix.h>
+\fs30 \cb1 \
+
+\fs24 \cb2 #include "TestCase.h"
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 CPPUNIT_TEST_SUITE_REGISTRATION( ScanAPITestSuite );
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 /*!
+\fs30 \cb1 \
+
+\fs24 \cb2 @brief Description:
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 Test case for initializing.
+\fs30 \cb1 \
+
+\fs24 \cb2 */
+\fs30 \cb1 \
+
+\fs24 \cb2 void ScanAPITestSuite::InitializeTesting()
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 HRESULT hr=S_OK;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 hr = CreatePMXScanner(&m_pScanAPI,KILO_WIA_PROJECT,TEXT("USBScan001"));
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT_MESSAGE("CreatePMXScanner won't be failed!", S_OK==hr);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 hr = m_pScanAPI->PMXScanner_Initialize();
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT_MESSAGE("PMXScanner_Initialize won't be failed!", S_OK==hr);
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 /*!
+\fs30 \cb1 \
+
+\fs24 \cb2 @brief Description:
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0 Test case for PMXScanner_GetTopPropertyInfo function.
+\fs30 \cb1 \
+
+\fs24 \cb2 */
+\fs30 \cb1 \
+
+\fs24 \cb2 void ScanAPITestSuite::Check_GetTopPropertyInfo()
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 PTOP_ITEM_INFORMATION pTopItem = new TOP_ITEM_INFORMATION;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 InitializeTesting();
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 m_pScanAPI->PMXScanner_GetTopPropertyInfo(pTopItem);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(100 == pTopItem->Brightness.lMax);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(-100 == pTopItem->Brightness.lMin);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(100 == pTopItem->Contrast.lMax);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(-100 == pTopItem->Contrast.lMin);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(100 == pTopItem->Threshold.lMax);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(-100 == pTopItem->Threshold.lMin);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(600 == pTopItem->XResolution.lMax);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(75 == pTopItem->XResolution.lMin);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(150 == pTopItem->XResolution.lNom);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(600 == pTopItem->YResolution.lMax);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(75 == pTopItem->YResolution.lMin);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 CPPUNIT_ASSERT(150 == pTopItem->YResolution.lNom);
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 delete pTopItem;
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 /* Below are helper functions*/
+\fs30 \cb1 \
+
+\fs24 \cb2 ScanAPITestSuite::ScanAPITestSuite()
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 m_pScanAPI = NULL;
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 void ScanAPITestSuite::setUp()
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 if(m_pScanAPI)
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 delete m_pScanAPI;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 m_pScanAPI = NULL;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 void ScanAPITestSuite::tearDown()
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 if(m_pScanAPI)
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 delete m_pScanAPI;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 m_pScanAPI = NULL;
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 *Note: The building target should same as testing platform. If you want run the unit testing on Win XP, you should define the target to Windows XP.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0
+\b0 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs45 \cf4 \cb2 \'a0\cf5 7.2 Supported Test Macros\cf4 \cb1 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat6 \clwWidth5216\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clcbpat6 \clwWidth6748\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\fs30 \cf4 \cb2 Macro
+\b0 \cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 Description
+\b0 \cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth5216\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth6748\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://cppunit.sourceforge.net/doc/lastest/group___assertions.html#ga0"}}{\fldrslt \cf5 \cb2 CPPUNIT_ASSERT}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Assertions that a condition is\'a0true.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth5216\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth6748\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://cppunit.sourceforge.net/doc/lastest/group___assertions.html#ga1"}}{\fldrslt \cf5 \cb2 CPPUNIT_ASSERT_MESSAGE}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Assertion with a user specified message.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth5216\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth6748\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://cppunit.sourceforge.net/doc/lastest/group___assertions.html#ga2"}}{\fldrslt \cf5 \cb2 CPPUNIT_FAIL}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails with the specified message.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth5216\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth6748\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://cppunit.sourceforge.net/doc/lastest/group___assertions.html#ga3"}}{\fldrslt \cf5 \cb2 CPPUNIT_ASSERT_EQUAL}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Asserts that two values are equals.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth5216\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth6748\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://cppunit.sourceforge.net/doc/lastest/group___assertions.html#ga4"}}{\fldrslt \cf5 \cb2 CPPUNIT_ASSERT_EQUAL_MESSAGE}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Asserts that two values are equals, provides additional messafe on failure.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth5216\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth6748\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://cppunit.sourceforge.net/doc/lastest/group___assertions.html#ga5"}}{\fldrslt \cf5 \cb2 CPPUNIT_ASSERT_DOUBLES_EQUAL}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Macro for primitive value comparisons.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth5216\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth6748\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://cppunit.sourceforge.net/doc/lastest/group___assertions.html#ga6"}}{\fldrslt \cf5 \cb2 CPPUNIT_ASSERT_THROW}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Asserts that the given expression throws an exception of the specified type.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth5216\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth6748\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://cppunit.sourceforge.net/doc/lastest/group___assertions.html#ga7"}}{\fldrslt \cf5 \cb2 CPPUNIT_ASSERT_NO_THROW}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Asserts that the given expression does not throw any exceptions.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth5216\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth6748\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://cppunit.sourceforge.net/doc/lastest/group___assertions.html#ga8"}}{\fldrslt \cf5 \cb2 CPPUNIT_ASSERT_ASSERTION_FAIL}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Asserts that an assertion fails.\'a0\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth12580\trftsWidth3 \trmarl504 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth5216\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth6748\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "http://cppunit.sourceforge.net/doc/lastest/group___assertions.html#ga9"}}{\fldrslt \cf5 \cb2 CPPUNIT_ASSERT_ASSERTION_PASS}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Asserts that an assertion passes.\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs60 \cf5 \cb2 8. OCUnit\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 OCUnit the standard Objective-C Unit Test framework for Mac OS and iOS development, that is extedned from SenTesting Framework which is written by Sen:Te. Due to it is bundled with XCode, developer could use it directly without any else installation.\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs45 \cf5 \cb2 8.1 Overview\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 OCUnit works in different way with other Unit Test framework, all suites and cases are runned after building, so all unexcepted result will be shown as compiling errors.\cb1 \
+\cb2 OCUnit is similar as Google Test without main function, it will be built as one bundle with .octest extention, and run with developer tools \'96 RunUnitTests, which is placed in /Developer/Tools folder.\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs45 \cf5 \cb2 8.2 Sample to add unit test\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 Below is a sample code to generate Fibonacci numbers. There are three source files:\cb1 \
+\cb2 \'a0 
+\i Fibonacci.h, Fibonacci.m and main.m
+\i0 \cb1 \
+\cb2 \'a0\cb1 \
+\cb2 The implementation of this project is ignored. Below steps are shown to add unit test base on this project.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Step 1. Create new group \'93UnitTest\'94 in source tree, and add new source file as below:\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723785_7232.png \width9680 \height2960 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 \'a0\cb1 \
+\cb2 Step 2. Name new class as Testing, and finish with wizard.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Step 3. Add below codes for Testing.h\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf10 \cb2 #import\cf11 <SenTestingKit/SenTestingKit.h>
+\fs30 \cf4 \cb1 \
+
+\fs24 \cf10 \cb2 #import\cf11 "Fibonacci.h"
+\fs30 \cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf12 \cb2 @interface\cf4 Testing : SenTestCase \{
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\cf14 Fibonacci
+\fs30 \cf4  
+\fs24 *
+\fs30  
+\fs24 \cf14 fib\cf4 ;
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 -(\cf12 void\cf4 )testNegative;
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf12 \cb2 @end
+\fs30 \cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\cb1 \
+\cb2 Step 4. Add below codes for Testing.m\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf10 \cb2 #import\cf11 "Testing.h"
+\fs30 \cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 \'a0
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf12 \cb2 @implementation\cf4 Testing
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf4 \cb2 -(\cf12 void\cf4 )setUp
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\cf14 fib
+\fs30 \cf4  
+\fs24 = [[\cf14 Fibonacci\cf4 \'a0\cf17 alloc\cf4 ]\cf17 init\cf4 ];
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 -(\cf12 void\cf4 )tearDown
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0 [\cf14 fib\cf4 \'a0\cf17 release\cf4 ];
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0
+\fs30 \cb1 \
+
+\fs24 \cb2 -(\cf12 void\cf4 )testNegative
+\fs30 \cb1 \
+
+\fs24 \cb2 \{
+\fs30 \cb1 \
+
+\fs24 \cb2 \'a0\'a0\'a0\'a0\'a0\'a0\cf10 STAssertTrue\cf4 (\cf15 1\cf4 ==[\cf14 fib\cf4 \'a0\cf16 GetFibonacci\cf4 :-\cf15 1\cf4 ],\cf11 @"For Negative, the result should be 0."\cf4 );
+\fs30 \cb1 \
+
+\fs24 \cb2 \}
+\fs30 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf12 \cb2 @end
+\fs30 \cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\cb1 \
+\cb2 Step 5. Add new unit test bundle target.\cb1 \
+\cb2 Create new unit test bundle as below:\cb1 \
+\cb2 \'a0\cb1 {{\NeXTGraphic 1340723804_5131.png \width6840 \height4740 \noorient
+}¬}\
+\cb2 And drag Fibonacci.h, Fibonacci.m, Testing.h and Testing.m into this target as below:\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723817_6027.png \width2160 \height1980 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 \'a0*And remove Testing.m from original target.\'a0 You also could create the target first, and then add new file for it only. That method was introduced in 6.2.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Step 6. Drag the new target into our own target to merge it with the project. Then the unit testing bundle will be built first while building the project.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723829_7386.png \width2760 \height1840 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 Step 7. Try to build the project and check the message for failed case:\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 {{\NeXTGraphic 1340723846_4510.png \width9660 \height7360 \noorient
+}¬}\pard\pardeftab720\partightenfactor0
+\cf4 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs45 \cf5 \cb2 8.3 Supported Test Macros\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 Below is the table to list major supported test macros:\cb1 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clcbpat6 \clwWidth2025\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clcbpat6 \clwWidth4727\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clcbpat6 \clwWidth5910\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf3 \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 Category
+\b0 \cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 Macro
+\b0 \cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\b \cf4 \cb2 Description
+\b0 \cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmgf \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Equality Tests\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertEqualObjects\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when two objects are different.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertEquals\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when two values are different.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertEqualsWithAccuracy\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when the difference between two values is greater than a given value.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmgf \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Nil Tests\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertNil\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when a given expression is not nil\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertNotNil\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when a given expression is nil.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmgf \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Boolean Tests\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertTrue\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when a given expression is false.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertFalse\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when a given expression is true.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmgf \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Exception Tests\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertThrows\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when an expression doesn\'92t raise an exception.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertThrowsSpecific\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when an expression doesn\'92t raise an exception of a particular class.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertThrowsSpecificNamed\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when an expression doesn\'92t raise an exception of a particular class with a given name.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertNoThrow\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when an expression raises an exception.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertNotThrowsSpecific\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when an expression raises an exception of a particular class.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertNotThrowsSpecificNamed\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when an expression doesn\'92t raise an exception of a particular class with a given name.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertTrueNoThrow\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when an expression is false or raises an exception.\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trwWidth13586\trftsWidth3 \trmarl144 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvmrg \clvertalt \clshdrawnil \clwWidth2025\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf3 \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth4727\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth5910\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf3 \clbrdrr\brdrs\brdrw20\brdrcf3 \clpadl144 \clpadr144 \gaph\cellx8640
+\pard\intbl\itap1\cell
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 STAssertFalseNoThrow\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf4 \cb2 Fails the test case when an expression is true or raises an exception.\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\cb1 \
+\cb2 \'a0For more details, please refer to <<Unit-Test Result Macro Reference >> from Apple Developer Documentation.\cb1 \
+\cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs60 \cf4 \cb2 9. Guideline to apply unit test\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 The major problem to apply unit test is how to balance it with general development. The benefit could not be turned up if unit test still be kept in discussion. That\'92s difficult to apply mutual Unit Test at first time. The unit test should be applied step by step, and implement regression test is a good start point.\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Generally, there are two steps to think about one unit test case.\cb1 \
+\cb2 1.
+\f3\fs18\fsmilli9333 \'a0\'a0\'a0\'a0
+\f1\fs30 The key point is identifying the core module, which should be low coupling with other modules.\cb1 \
+\cb2 2.
+\f3\fs18\fsmilli9333 \'a0\'a0\'a0\'a0
+\f1\fs30 To identify the testing interface and all available testing conditions. (To find when it could not work.)\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 Below are correct situations to apply unit test:\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs45 \cf4 \cb2 9.1\'a0While one bug is found (Core module)\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 Try to think about to add one test case to keep the correction, and remember to run the test case while building.\cb1 \
+\cb2 Think about below questions:\cb1 \
+\cb2 \'a0 
+\i Why this error happened?
+\i0 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\i \cf4 \cb2 \'a0 How to ensure similar errors won\'92t happen again?
+\i0 \cb1 \
+
+\i \cb2 \'a0
+\i0 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs45 \cf5 \cb2 9.2 While new design is requested\cf4 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 Try to think about involving unit test for your new design; though one simple testing suite will be designed.\cb1 \
+\cb2 At this point, it is a very good chance to think about to implement unit test. Think about below questions:\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\i \cf4 \cb2 How many classes/objects or functions in the new design?
+\i0 \cb1 \
+
+\i \cb2 What major interface or functions for each of them?
+\i0 \cb1 \
+
+\i \cb2 How to ensure them won\'92t make mistake?
+\i0 \cb1 \
+
+\i \cb2 Which classes/objects or functions could be picked up for unit test?
+\i0 \cb1 \
+
+\i \cb2 What will you get from unit test?
+\i0 \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf4 \cb2 \'a0\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b\fs60 \cf4 \cb2 10. Reference\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\b0\fs30 \cf4 \cb2 \'a0\'a0 1. 
+\f0 \'b1\'e3\'c0\'fb\'b5\'c4\'bf\'aa\'b7\'a2\'b9\'a4\'be\'df
+\f1  CppUnit 
+\f0 \'bf\'ec\'cb\'d9\'ca\'b9\'d3\'c3\'d6\'b8\'c4\'cf
+\f1 \cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0 {\field{\*\fldinst{HYPERLINK "http://www.ibm.com/developerworks/cn/linux/l-cppunit/"}}{\fldrslt \cf7 http://www.ibm.com/developerworks/cn/linux/l-cppunit/}}\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0 \'a02.Test Driving Your Code with OCUnit\cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0{\field{\*\fldinst{HYPERLINK "http://developer.apple.com/tools/unittest.html"}}{\fldrslt \cf7 http://developer.apple.com/tools/unittest.html}}\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0 \'a03.
+\f0 \'cd\'e6\'d7\'aa
+\f1 Google
+\f0 \'bf\'aa\'d4\'b4
+\f1 C++
+\f0 \'b5\'a5\'d4\'aa\'b2\'e2\'ca\'d4\'bf\'f2\'bc\'dc
+\f1 Google Test
+\f0 \'cf\'b5\'c1\'d0
+\f1 \cb1 \
+\cb2 \'a0\'a0\'a0\'a0\'a0\'a0{\field{\*\fldinst{HYPERLINK "http://www.cnblogs.com/coderzh/archive/2009/04/06/1426755.html"}}{\fldrslt \cf7 http://www.cnblogs.com/coderzh/archive/2009/04/06/1426755.html}}\cb1 \
+\cb2 \'a0\cb1 \
+\cb2 \'a0\'a0 4. 
+\f0 \'b5\'a5\'d4\'aa\'b2\'e2\'ca\'d4\'d6\'ae
+\f1 JUnit
+\f0 \'c3\'d8\'bc\'ae\'d7\'a8\'cc\'e2
+\f1 \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f4\fs24 \cf4 \cb2 \'a0\'a0\'a0\'a0{\field{\*\fldinst{HYPERLINK "http://tech.it168.com/zt/Junit/index.html"}}{\fldrslt \cf7 http://tech.it168.com/zt/Junit/index.html}}
+\f1\fs32 \cf0 \cb1 \
+
+\f4\fs24 \cf4 \cb2 \'a0\'a05.
+\f5 \'cd\'e6\'d7\'aa
+\f4 Google
+\f5 \'bf\'aa\'d4\'b4
+\f4 C++
+\f5 \'b5\'a5\'d4\'aa{\field{\*\fldinst{HYPERLINK "http://lib.csdn.net/base/softwaretest"}}{\fldrslt 
+\b \cf20 \'b2\'e2\'ca\'d4}}\'bf\'f2\'bc\'dc
+\f4  {\field{\*\fldinst{HYPERLINK "http://www.cnitblog.com/zouzheng/archive/2009/09/28/61614.html"}}{\fldrslt 
+\b \cf21 http://www.cnitblog.com/zouzheng/archive/2009/09/28/61614.html}}}
