@@ -1,0 +1,9 @@
+def pods
+
+pod 'TEncryption'
+
+end
+
+target 'base64-oc' do
+	pods
+end
